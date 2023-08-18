@@ -2,7 +2,10 @@
 // @name           Open GitHub files in VS Code
 // @version        1.0.0
 // @author         aminomancer
-// @homepageURL    https://github.com/aminomancer/uc.css.js
+// @homepageURL    https://github.com/aminomancer/userscripts
+// @supportURL     https://github.com/aminomancer/userscripts
+// @downloadURL    https://cdn.jsdelivr.net/gh/aminomancer/userscripts@latest/openGitHubFilesInVSCode.user.js
+// @updateURL      https://cdn.jsdelivr.net/gh/aminomancer/userscripts@latest/openGitHubFilesInVSCode.user.js
 // @match          https://github.com/*/*
 // @grant          GM_listValues
 // @grant          GM_getValue
