@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Open GitHub files in VS Code
-// @version        1.0.2
+// @version        1.0.3
 // @author         aminomancer
 // @homepageURL    https://github.com/aminomancer/userscripts
 // @supportURL     https://github.com/aminomancer/userscripts
@@ -50,13 +50,17 @@ for (const key of GM_listValues()) {
 
 function openInVSCode({ repoName, filePath, lineNum }) {
   const repoPath = prefs.repos[repoName];
-  if (!repoPath) return;
+  if (!repoPath) {
+    return;
+  }
   let protocolURL = `${prefs.protocol_name}://file/${repoPath}/${filePath}`;
   if (lineNum) {
     protocolURL += `:${lineNum}`;
   }
-  if (!protocolURL) return;
-  var link = document.createElement("a");
+  if (!protocolURL) {
+    return;
+  }
+  let link = document.createElement("a");
   link.setAttribute("href", protocolURL);
   link.click();
 }
