@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Open GitHub files in VS Code
-// @version        1.0.3
+// @version        1.0.4
 // @author         aminomancer
 // @homepageURL    https://github.com/aminomancer/userscripts
 // @supportURL     https://github.com/aminomancer/userscripts
@@ -31,9 +31,13 @@ const defaultPrefs = {
   // GitHub repo to the path of the local clone. If the repo name is "foo/bar",
   // then the path should be "/path/to/foo/bar". If a repo is not listed here,
   // it will not be opened in VS Code. Only use forward slashes, even on
-  // Windows, since the path becomes part of a URL.
+  // Windows, since the path becomes part of a URL. You can also set a default
+  // directory which will be used as a fallback if a repo is not specifically
+  // listed here. If default_dir is set to "C:/Repos" then a repo called
+  // "user123/example456" will be opened from "C:/Repos/example456".
   repos: {
-    "user123/example456": "/path/to/user123/example456",
+    // default_dir: "/path/to/default_dir",
+    // "user123/example456": "/path/to/user123/example456",
   },
 };
 
@@ -48,10 +52,14 @@ for (const key of GM_listValues()) {
   prefs[key] = GM_getValue(key);
 }
 
-function openInVSCode({ repoName, filePath, lineNum }) {
-  const repoPath = prefs.repos[repoName];
+function openInVSCode({ user, repo, filePath, lineNum }) {
+  let repoPath = prefs.repos[`${user}/${repo}`];
   if (!repoPath) {
-    return;
+    if (prefs.repos.default_dir) {
+      repoPath = `${prefs.repos.default_dir}/${repo}`;
+    } else {
+      return;
+    }
   }
   let protocolURL = `${prefs.protocol_name}://file/${repoPath}/${filePath}`;
   if (lineNum) {
@@ -119,10 +127,7 @@ function getForFilesView() {
     const match = path.match(/\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.*)/);
     if (!match) continue;
     const [, user, repo, , filePath] = match;
-    fileDetails = {};
-    fileDetails.repoName = `${user}/${repo}`;
-    fileDetails.filePath = filePath;
-    fileDetails.lineNum = lineNum;
+    fileDetails = { user, repo, filePath, lineNum };
     break;
   }
 
@@ -147,9 +152,8 @@ function getForURL(url) {
   }
   const [, user, repo, , , ...pathParts] = url.pathname.split("/");
   if (!pathParts.length) return null;
-  const repoName = `${user}/${repo}`;
   const lineNum = url.hash?.match(/^#L(\d+)/)?.[1];
-  return { repoName, filePath: pathParts.join("/"), lineNum };
+  return { user, repo, filePath: pathParts.join("/"), lineNum };
 }
 
 function handleKeydown(event) {
