@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name           Old Reddit Better Image Gallery Comments
-// @version        1.0.0
+// @version        1.0.1
 // @author         aminomancer
 // @homepageURL    https://github.com/aminomancer/userscripts
 // @supportURL     https://github.com/aminomancer/userscripts
 // @downloadURL    https://cdn.jsdelivr.net/gh/aminomancer/userscripts@latest/oldRedditBetterGallery.user.js
 // @updateURL      https://cdn.jsdelivr.net/gh/aminomancer/userscripts@latest/oldRedditBetterGallery.user.js
 // @namespace      https://github.com/aminomancer
-// @match          http*://*.reddit.com/r/BaldursGate3/comments/1618yta/40_dyes_on_adamantine_splint_armour/*
+// @match          http*://*.reddit.com/r/*/comments/*
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @run-at         document-idle
